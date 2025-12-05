@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.15",
+    "@prisma/adapter-libsql": "^7.1.0",
     "@prisma/client": "^6.19.0",
     "expo-server-sdk": "^4.0.0",
     "next": "16.0.7",

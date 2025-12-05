@@ -38,3 +38,4 @@ CREATE INDEX "NotificationLog_status_idx" ON "NotificationLog"("status");
 
 -- CreateIndex
 CREATE INDEX "NotificationLog_sentAt_idx" ON "NotificationLog"("sentAt");
+
