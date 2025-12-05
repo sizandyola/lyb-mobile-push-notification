@@ -1,18 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { Expo } from 'expo-server-sdk';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { Expo } from "expo-server-sdk";
 
 const expo = new Expo();
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { expoPushToken, platform, deviceInfo } = body;
+    const { token: expoPushToken, platform, deviceInfo } = body;
 
     // Validate the token format
     if (!Expo.isExpoPushToken(expoPushToken)) {
       return NextResponse.json(
-        { error: 'Invalid Expo push token format' },
+        { error: "Invalid Expo push token format" },
         { status: 400 }
       );
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        message: 'Token updated successfully',
+        message: "Token updated successfully",
         tokenId: updated.id,
       });
     }
@@ -53,14 +53,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Token registered successfully',
+      message: "Token registered successfully",
       tokenId: newToken.id,
     });
-
   } catch (error) {
-    console.error('[API] Error registering token:', error);
+    console.error("[API] Error registering token:", error);
     return NextResponse.json(
-      { error: 'Failed to register token' },
+      { error: "Failed to register token" },
       { status: 500 }
     );
   }
