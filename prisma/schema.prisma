@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Store push notification tokens
+model PushToken {
+  id        String   @id @default(uuid())
+  token     String   @unique  // Expo Push Token (e.g., ExponentPushToken[xxxxx])
+
+  // Device Info
+  platform  String   // "ios" or "android"
+  deviceInfo Json?   // Store additional device info (model, OS version, etc.)
+
+  // Metadata
+  isActive   Boolean @default(true)  // Can be disabled without deleting
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastUsedAt DateTime @default(now())  // Update when notification sent successfully
+
+  // Indexes for fast queries
+  @@index([isActive])
+}
+
+// Track sent notifications
+model NotificationLog {
+  id          String   @id @default(uuid())
+
+  // Who received it
+  tokenId     String?  // Link to PushToken
+
+  // Notification content
+  title       String
+  body        String
+  data        Json?    // Custom data payload
+
+  // Status
+  status      String   // "sent", "failed", "delivered", "read"
+
+  // Expo ticket info (for tracking delivery)
+  ticketId    String?
+  receiptId   String?
+  errorCode   String?
+  errorMessage String?
+
+  // Timestamps
+  sentAt      DateTime @default(now())
+  deliveredAt DateTime?
+  readAt      DateTime?
+
+  @@index([status])
+  @@index([sentAt])
+}

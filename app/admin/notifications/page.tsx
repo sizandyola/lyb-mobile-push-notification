@@ -10,7 +10,7 @@ interface Stats {
   totalNotificationsSent: number;
 }
 
-export default function Home() {
+export default function NotificationAdmin() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(false);
