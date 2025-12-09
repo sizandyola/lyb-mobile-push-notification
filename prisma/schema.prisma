@@ -60,3 +60,27 @@ model NotificationLog {
   @@index([status])
   @@index([sentAt])
 }
+
+// Store error logs from mobile app
+model ErrorLog {
+  id          String   @id @default(uuid())
+
+  // Device/Token info (optional)
+  tokenId     String?  // Link to PushToken if available
+  platform    String?  // "ios" or "android"
+
+  // Error details
+  errorType   String   // e.g., "NETWORK_ERROR", "API_ERROR", "CRASH"
+  message     String   @db.Text  // Error message
+  stackTrace  String?  @db.Text  // Stack trace if available
+
+  // Context
+  context     Json?    // Additional context (screen, action, etc.)
+  appVersion  String?  // Mobile app version
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+
+  @@index([errorType])
+  @@index([createdAt])
+}
